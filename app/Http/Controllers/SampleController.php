@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SampleRequest;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use packages\Domain\Model\UserId;
 use packages\Service\UserGetInterface;
@@ -16,14 +18,12 @@ class SampleController extends BaseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(UserGetInterface $interactor)
+    public function index(SampleRequest $request, UserGetInterface $interactor)
     {
         //
         $userId = new UserId(1);
         $response = $interactor->execute($userId);
-        var_dump($response);
-        exit;
-        return 'hoge';
+        return json_encode($response);
     }
 
     /**

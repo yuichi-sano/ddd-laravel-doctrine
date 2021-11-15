@@ -15,6 +15,7 @@ class DoctrineUserRepository extends EntityRepository implements UserRepository
     {
         $query = $this->createNativeNamedQuery('dd');
         return $query->getSingleResult();
+
     }
 
     public function add(User $user): void

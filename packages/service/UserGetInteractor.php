@@ -1,6 +1,7 @@
 <?php
 namespace packages\Service;
 use packages\Domain\Model\UserId;
+use packages\Domain\Model\User;
 use packages\Infrastructure\Database\UserRepository;
 
 class UserGetInteractor implements UserGetInterface
@@ -12,18 +13,11 @@ class UserGetInteractor implements UserGetInterface
         $this->userRepository = $userRepository;
     }
 
-    public function execute(UserId $userId): UserGetOutputData
+    public function execute(UserId $userId): User
     {
         $user = $this->userRepository->findUser(new UserId($userId->getId()));
 
-        return new UserGetOutputData(
-            $user->getId(),
-            $user->getName(),
-            $user->getAddress()->street(),
-            $user->getAddress()->postalCode(),
-            $user->getAddress()->city(),
-            $user->getAddress()->country(),
-        );
+        return $user;
 
 
     }
