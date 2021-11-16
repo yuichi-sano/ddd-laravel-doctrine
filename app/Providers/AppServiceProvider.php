@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Providers;
-use packages\Domain\Model\User;
+use packages\Domain\Model\User\User;
 use packages\Infrastructure\Database\Doctrine as DoctrineRepos;
 use packages\Infrastructure\Database as DatabaseRepos;
 use Illuminate\Support\ServiceProvider;
@@ -23,7 +23,7 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(
             \packages\Service\UserGetInterface::class,
-            \packages\Service\UserGetInteractor::class
+            \packages\Service\UserGetService::class
         );
 
     }
@@ -31,7 +31,7 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(
             \packages\Service\UserGetInterface::class,
-            \packages\Service\TestUserGetInteractor::class
+            \packages\Service\TestUserGetService::class
         );
 
     }

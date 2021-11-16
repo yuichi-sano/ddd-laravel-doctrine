@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Providers;
-use packages\Domain\Model\User;
+use packages\Domain\Model\User\User;
 use packages\Infrastructure\Database\Doctrine as DoctrineRepos;
 use packages\Infrastructure\Database as DatabaseRepos;
 use Illuminate\Support\ServiceProvider;

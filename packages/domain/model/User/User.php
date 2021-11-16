@@ -2,27 +2,22 @@
 
 declare(strict_types=1);
 
-namespace packages\Domain\Model;
+namespace packages\Domain\Model\User;
 
 class User
 {
-    private int $id;
+    private UserId $id;
     private string $name;
     private Address $address;
+    private int $primary ;
 
-    public function __construct(int $id, string $name, Address $address)
-    {
-        $this->id = $id;
-        $this->name = $name;
-        $this->address = $address;
-    }
 
     /**
      * @return int
      */
     public function getId(): int
     {
-        return $this->id;
+        return $this->id->value();
     }
 
     /**
@@ -43,6 +38,6 @@ class User
 
     public function hasGrants(): boolean
     {
-        return $this->id == 1 ? true:false;
+        return $this->id == 1;
     }
 }
