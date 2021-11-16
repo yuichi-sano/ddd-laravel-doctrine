@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Definition;
 
-class SampleDefinition implements DefinitionInterface
+class SampleDefinition implements Basic\DefinitionInterface
 {
     /**
      * HttpRequestParameter

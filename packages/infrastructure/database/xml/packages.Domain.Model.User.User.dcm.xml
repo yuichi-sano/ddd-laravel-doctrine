@@ -23,7 +23,7 @@
       />
 
       <named-native-queries>
-          <named-native-query name="dd" result-class="__CLASS__">
+          <named-native-query name="ddd-sample" result-class="__CLASS__">
               <query>
                   select 1 as id, 2 as name, 4 as street, 3 as p
               </query>

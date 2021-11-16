@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 use App\Http\Requests\Definition\SampleDefinition;
 
-class SampleRequest extends AbstractFormRequest
+class SampleRequest extends Basic\AbstractFormRequest
 {
     public function __construct(SampleDefinition $definition = null)
     {

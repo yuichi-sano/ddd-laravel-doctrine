@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Basic;
 use App\Exceptions\ValidationException;
-use App\Http\Requests\Definition\DefinitionInterface;
+use App\Http\Requests\Definition\Basic\DefinitionInterface;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 

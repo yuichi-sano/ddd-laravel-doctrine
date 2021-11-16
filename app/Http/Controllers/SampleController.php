@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SampleRequest;
+use App\Http\Resources\SampleResource;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -21,10 +22,9 @@ class SampleController extends BaseController
     public function index(SampleRequest $request, UserGetInterface $userGet)
     {
         //
-        $userId = new UserId(1);
+        $userId = new UserId($request->getHoge());
         $response = $userGet->execute($userId);
-        var_dump($response);
-        return json_encode($response);
+        return SampleResource::buildResult($response);;
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Definition;
+namespace App\Http\Requests\Definition\Basic;
 
 interface DefinitionInterface{
 
