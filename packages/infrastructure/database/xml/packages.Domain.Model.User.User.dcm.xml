@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
   <entity name="packages\Domain\Model\User\User">
-      <id name="primary" type="bigint" column="p" >
-          <custom-id-generator
-              class="packages\Domain\Model\User\UserId"
-          />
-      </id>
     <field name="name" type="string" column="name" length="255" nullable="false">
       <options>
         <option name="fixed"/>
@@ -21,7 +16,6 @@
           class="packages\Domain\Model\User\UserId"
           use-column-prefix="false"
       />
-
       <named-native-queries>
           <named-native-query name="ddd-sample" result-class="__CLASS__">
               <query>

@@ -1,49 +1,14 @@
 <?php
 
-namespace App\Http\Resources\Definition;
-
-use App\Http\Resources\Definition\Basic\ResultDefinitionInterface;
-use Illuminate\Http\Resources\Json\JsonResource;
-
-
-class SampleDefinition implements ResultDefinitionInterface
-{
-
-
-    //住所候補リスト
-    protected $addresses = [];
-
-
-
-    /**
-     * @return mixed
-     */
-    public function getAddresses()
-    {
-        return $this->addresses;
-    }
-
-
-
-    /**
-     * @param mixed addresses
-     */
-    public function addAddresses( $addresses): void
-    {
-        $this->addresses[] = $addresses;
-    }
-
-    /**
-     * @param mixed addresses
-     */
-    public function setAddresses(array $addresses): void
-    {
-        foreach($addresses as $unit){
-           $this->addAddresses($unit);
-        }
-    }
-
-
+namespace App\Http\Resources\Definition\Basic;
+/**
+ * Abstract Class
+ * AbstractResultDefinition
+ * ResultDefinitionが継承する関数、共通関数を実装
+ * @note  interfaceは実装しません
+ * @package App\Http\Result\Definition\Basic
+ */
+abstract class AbstractResultDefinition {
 
     /**
      * toArray
@@ -51,7 +16,7 @@ class SampleDefinition implements ResultDefinitionInterface
      * @param $request
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         $result = array();
         foreach ($this as $key => $val) {
@@ -62,10 +27,11 @@ class SampleDefinition implements ResultDefinitionInterface
 
     /**
      * 渡された配列の中身を適宜生成し詰めなおしたものをreturn
-     * @param $val
+     * @param $vals
      * @return array
      */
-    private  function childConvValue($vals){
+    private  function childConvValue(array $vals): array
+    {
         $value = array();
         foreach ($vals as $key=> $val){
             $value[$key] = $this->convValue($val);
@@ -81,5 +47,4 @@ class SampleDefinition implements ResultDefinitionInterface
     private function convValue($val){
         return $val instanceof ResultDefinitionInterface ? $val->toArray() : $val;
     }
-
 }

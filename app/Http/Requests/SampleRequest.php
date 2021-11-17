@@ -18,9 +18,6 @@ class SampleRequest extends Basic\AbstractFormRequest
      * Getters
      * Requestにつめられたマジックメソッド経由のプロパティをビジネスモデルに流し込みget{Model名}にて取得
      */
-    /**
-     * @return string
-     */
     public function getHoge(): string
     {
         return $this->hoge;

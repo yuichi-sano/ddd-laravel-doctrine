@@ -9,8 +9,6 @@ class User
     private UserId $id;
     private string $name;
     private Address $address;
-    private int $primary ;
-
 
     /**
      * @return int

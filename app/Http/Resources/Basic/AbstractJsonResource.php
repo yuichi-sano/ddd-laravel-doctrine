@@ -10,7 +10,7 @@ abstract class AbstractJsonResource extends JsonResource
     public static $wrap = "result";
     protected string $state = '200';
     protected ?string $message = null;
-    protected  ResultDefinitionInterface   $result;
+    protected  ResultDefinitionInterface  $result;
 
     public function __construct(ResultDefinitionInterface  $resource)
     {

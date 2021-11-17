@@ -10,7 +10,7 @@ use Illuminate\Foundation\Http\FormRequest;
 abstract class AbstractFormRequest extends FormRequest
 {
     public array $validationMessage = [];
-    protected ?DefinitionInterface $definition;
+    protected DefinitionInterface $definition;
 
     abstract protected function transform(array $attrs);
 
