@@ -23,11 +23,12 @@ class AuthController extends BaseController
      */
     public function login(SampleRequest $request, UserGetInterface $userGet)
     {
-        //
         var_dump($request->validated());
         //exit;
-
+        //\Auth::guard('api')->getProvider()->setHasher(app('md5hash'));
+        //\Auth::guard('api')->getProvider()->hasher=app('md5hash');
         if (!Auth::attempt($request->validated())) {
+
             return response()->json([
                 'Invalid credential'
             ], 400);

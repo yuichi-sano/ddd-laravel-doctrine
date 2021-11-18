@@ -12,6 +12,7 @@ return [
     | used; however, you remain free to modify this option if you wish.
     |
     | Supported: "bcrypt", "argon", "argon2id"
+    | add@yuichi.sano "md5","sha256"
     |
     */
 

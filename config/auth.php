@@ -72,6 +72,7 @@ return [
         'users' => [
             'driver' => 'doctrine', // laravel-doctrineが提供しているUserProvider
             'model' => packages\Domain\Model\Authentication\Account::class, // 変更
+            //'hash' => App\Extension\Hasher\MD5Hasher::class
         ],
     ],
 

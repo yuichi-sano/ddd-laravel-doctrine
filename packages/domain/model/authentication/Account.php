@@ -40,4 +40,10 @@ class Account implements  Authenticatable,JWTSubject
         return [];
     }
 
+    // JWT の sub に含める値。主キーを使う
+    public function getKey()
+    {
+        return env('JWT_SECRET');
+    }
+
 }

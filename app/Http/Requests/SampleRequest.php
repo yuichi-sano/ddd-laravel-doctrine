@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 use App\Http\Requests\Definition\SampleDefinition;
+use Doctrine\Common\Collections\Criteria;
+use packages\Domain\Model\User\UserList;
 
 class SampleRequest extends Basic\AbstractFormRequest
 {
@@ -22,4 +24,8 @@ class SampleRequest extends Basic\AbstractFormRequest
     {
         return $this->hoge;
     }
+
+
+
+
 }

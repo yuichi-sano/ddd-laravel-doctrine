@@ -10,7 +10,7 @@ class SampleDefinition implements Basic\DefinitionInterface
      */
     protected string $hoge = 'required|numeric';
     protected string $password = 'required|string';
-
+    protected string $access_id = 'required|string';
     protected array $rules = array();
     protected array $attribute = array();
 
