@@ -5,13 +5,13 @@ CREATE SCHEMA sample;
 
 -- exam 試験
 DROP TABLE IF EXISTS sample.master;
-CREATE TABLE sample.sample (
+CREATE TABLE sample.master (
   master_type CHAR(1) NOT NULL CHECK(master_type IN ('1', '2')),
   start_date DATE NOT NULL,
   end_date DATE NOT NULL,
   created_at TIMESTAMP(8) NOT NULL DEFAULT CURRENT_TIMESTAMP,
   created_user VARCHAR(10) NOT NULL DEFAULT '',
-  CONSTRAINT periods_pkey PRIMARY KEY (master_type)
+  CONSTRAINT sampl_master_pkey PRIMARY KEY (master_type)
 );
 
 COMMENT ON TABLE sample.master IS 'sample-master';
@@ -33,17 +33,17 @@ CREATE TABLE sample.users (
   created_at TIMESTAMP(8) NOT NULL DEFAULT CURRENT_TIMESTAMP,
   created_user VARCHAR(10) NOT NULL DEFAULT '',
   CONSTRAINT users_pkey PRIMARY KEY (user_id),
-  CONSTRAINT users_ukey UNIQUE (user_no, office_code)
+  CONSTRAINT users_ukey UNIQUE (access_id)
 );
 
-COMMENT ON TABLE sample.user IS 'sampleユーザー';
-COMMENT ON COLUMN sample.user.user_id IS 'sampleユーザーID';
-COMMENT ON COLUMN sample.user.access_id IS 'sample認証用ID';
-COMMENT ON COLUMN sample.user.password IS 'パスワード';
-COMMENT ON COLUMN sample.user.expires_at IS '有効日時';
-COMMENT ON COLUMN sample.user.readonly_flag IS '読み取り専用フラグ';
-COMMENT ON COLUMN sample.user.created_at IS '登録日時';
-COMMENT ON COLUMN sample.user.created_user IS '登録者';
+COMMENT ON TABLE sample.users IS 'sampleユーザー';
+COMMENT ON COLUMN sample.users.user_id IS 'sampleユーザーID';
+COMMENT ON COLUMN sample.users.access_id IS 'sample認証用ID';
+COMMENT ON COLUMN sample.users.password IS 'パスワード';
+COMMENT ON COLUMN sample.users.expires_at IS '有効日時';
+COMMENT ON COLUMN sample.users.readonly_flag IS '読み取り専用フラグ';
+COMMENT ON COLUMN sample.users.created_at IS '登録日時';
+COMMENT ON COLUMN sample.users.created_user IS '登録者';
 
 DROP TABLE IF EXISTS sample.user_refresh_tokens;
 CREATE TABLE sample.user_refresh_tokens (
