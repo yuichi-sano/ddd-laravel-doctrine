@@ -41,8 +41,8 @@ class CustomHashServiceProvider extends HashServiceProvider
     public function provides()
     {
         $provides = $this->defaultProvides();
-        array_merge($provides,$this->md5Providers());
-        array_merge($provides,$this->SHA256Providers());
+        array_merge($provides,$this->md5Provides());
+        array_merge($provides,$this->SHA256Provides());
         return $provides;
     }
 
@@ -57,7 +57,8 @@ class CustomHashServiceProvider extends HashServiceProvider
         });
     }
 
-    public function defaultProvides(){
+    public function defaultProvides(): array
+    {
         return ['hash', 'hash.driver'];
     }
 
