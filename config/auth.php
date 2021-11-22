@@ -41,9 +41,13 @@ return [
             'provider' => 'users',
         ],
         'api' => [
-            'driver' => 'jwt',
-            'provider' => 'users',
+            'driver' => 'jwt-custom',
+            'provider' => 'doctrine-custom',
         ],
+        'jwt-custom' => [
+            'driver' => 'jwt-custom',
+            'provider' => 'doctrine-custom',
+        ]
     ],
 
     /*
@@ -69,10 +73,9 @@ return [
             'model' => App\Models\User::class,
         ],*/
 
-        'users' => [
-            'driver' => 'doctrine', // laravel-doctrineが提供しているUserProvider
+        'doctrine-custom' => [
+            'driver' => 'doctrine-custom', // laravel-doctrineが提供しているUserProvider
             'model' => packages\Domain\Model\Authentication\Account::class, // 変更
-            //'hash' => App\Extension\Hasher\MD5Hasher::class
         ],
     ],
 

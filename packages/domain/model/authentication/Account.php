@@ -35,7 +35,7 @@ class Account implements  Authenticatable,JWTSubject
     }
 
     // JWT のクレームに追加する値。今回は特になし
-    public function getJWTCustomClaims()
+    public function getJWTCustomClaims(): array
     {
         return [];
     }

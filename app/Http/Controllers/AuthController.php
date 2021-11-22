@@ -4,16 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SampleRequest;
 use App\Http\Resources\SampleResource;
+use Illuminate\Contracts\Hashing\Hasher;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
-use packages\Domain\Model\User\UserId;
 use packages\Service\UserGetInterface;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
-
 class AuthController extends BaseController
 {
     /**
@@ -24,17 +22,16 @@ class AuthController extends BaseController
     public function login(SampleRequest $request, UserGetInterface $userGet)
     {
 
-        //exit;
-        //\Auth::guard('api')->getProvider()->setHasher(app('md5hash'));
-        //\Auth::guard('api')->getProvider()->hasher=app('md5hash');
-        if (!Auth::attempt($request->validated())) {
+        //Auth::guard('api')->getProvider()->setHasher(app('md5hash'));
+        if (! $token= Auth::attempt($request->validated())) {
 
             return response()->json([
                 'Invalid credential'
             ], 400);
         }
+        $ref = Auth::refresh();
 
-        return response()->json([]);
+        return response()->json([$token,$ref]);
     }
 
 }
