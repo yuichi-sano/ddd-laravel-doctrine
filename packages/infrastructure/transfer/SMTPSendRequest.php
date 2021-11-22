@@ -2,6 +2,7 @@
 
 namespace packages\Infrastructure\Transfer;
 
+use Illuminate\Mail\Mailable;
 use packages\Domain\Basic\Mail\Address;
 use packages\Domain\Basic\Mail\AddressList;
 use packages\Domain\Basic\Mail\Content;
@@ -14,17 +15,19 @@ class SMTPSendRequest
 
     private Header $header;
     private Message $message;
+    private Mailable $mailable;
 
 
     /**
      * Create a new message instance.
-     *
+     * TODO mailableは冗長
      * @return void
      */
-    public function __construct(Header $header, Message $message)
+    public function __construct(Header $header, Message $message, Mailable $mailable)
     {
         $this->header = $header;
         $this->message = $message;
+        $this->mailable =$mailable;
     }
 
     public function getFrom(): Address
@@ -48,5 +51,9 @@ class SMTPSendRequest
     public function getContent(): Content
     {
         return $this->message->getContent();
+    }
+    public function getMailable(): Mailable
+    {
+        return $this->mailable;
     }
 }

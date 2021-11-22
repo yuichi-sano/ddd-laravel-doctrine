@@ -30,11 +30,12 @@ class SampleMailNotice extends Mailable
      *
      * @return $this
      */
-    public function build()
+    public function build(): SampleMailNotice
     {
         return $this->view('emails.contact')
             ->subject($this->message->getSubject())
             ->from($this->header->getFrom()->address, $this->header->getFrom()->personal)
+            ->to($this->header->getTo()->toArray())
             ->with('data', $this->message->getContent()->toString());
     }
 }

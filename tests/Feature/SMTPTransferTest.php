@@ -39,9 +39,8 @@ class SMTPTransferTest extends TestCase
         $subject = new Subject('test');
         $content = new Content(['testでメールします']);
         $message = new Message($subject, $content);
-
-        $tr = new SMTPTransfer(new SampleMailNotice($head,$message));
-        $tr->send(new SMTPSendRequest($head,$message));
+        $mailable = new SampleMailNotice($head,$message);
+        SMTPTransfer::send(new SMTPSendRequest($head,$message,$mailable));
 
         $email = 'test1@example.com';
         // メッセージが指定したユーザーに届いたことをアサート

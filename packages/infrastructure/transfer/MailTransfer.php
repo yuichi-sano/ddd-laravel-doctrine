@@ -4,5 +4,5 @@ namespace packages\Infrastructure\Transfer;
 
 interface MailTransfer
 {
-    public function send(SMTPSendRequest $request);
+    public static function send(SMTPSendRequest $request);
 }

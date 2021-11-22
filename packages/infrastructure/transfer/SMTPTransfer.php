@@ -6,24 +6,13 @@ namespace packages\Infrastructure\Transfer;
 use Illuminate\Mail\Mailable;
 use Illuminate\Support\Facades\Mail;
 
+/**
+ * TODO Queueに関する決めごと及び仕組の設計要
+ */
+
 class SMTPTransfer implements MailTransfer
 {
-    public Mailable $builder;
-
-    /**
-     * Create a new message instance.
-     *
-     * @return void
-     */
-    public function __construct(Mailable $mailable)
-    {
-        $this->builder = $mailable;
-    }
-
-    public function send(SMTPSendRequest $request){
-        foreach ($request->getTo() as $to){
-            Mail::to($to->address)->send($this->builder);
-        }
-
+    public static function send(SMTPSendRequest $request){
+        Mail::mailer('smtp')->to($request->getTo()->toArray())->send($request->getMailable());
     }
 }

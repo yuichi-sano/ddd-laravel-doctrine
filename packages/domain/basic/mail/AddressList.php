@@ -22,6 +22,19 @@ class AddressList extends Collection
         return parent::getIterator();
     }
 
+    /**
+     * 連想配列にコンバートします
+     * @return array
+     */
+    public function toArray(): array
+    {
+        $toArray=[];
+        foreach ($this->data as $data){
+            $toArray[$data->personal] = $data->address;
+        }
+        return $toArray;
+    }
+
 }
 
 
