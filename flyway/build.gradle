@@ -11,7 +11,7 @@ configurations {
 }
 
 flyway {
-    url = 'jdbc:postgresql://localhost:5433/sample'
+    url = 'jdbc:postgresql://host.docker.internal:5433/sample'
     user = 'sample'
     password = 'weak-password'
     encoding = 'UTF-8'
@@ -38,7 +38,7 @@ tasks.register( 'schemaSpy', JavaExec ) {
             schemaSpyFile,
             '-t', 'pgsql11',
             '-dp', driverFile,
-            '-host', 'localhost',
+            '-host', 'host.docker.internal',
             '-port', '5433',
             '-db', 'sample',
             '-u', 'sample',

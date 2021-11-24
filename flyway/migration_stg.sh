@@ -4,4 +4,4 @@
 #
 #cd $BASE_DIR
 #
-#./gradlew -i clean processResources flywayMigrate -Dflyway.locations=classpath:db/migration,classpath:develop -Dflyway.url=jdbc:postgresql://{url}:5432/{dbname} -Dflyway.user={user} -Dflyway.password={pass}
+#./gradlew -i clean processResources flywayMigrate -Dflyway.locations=classpath:db/migration,classpath:develop -Dflyway.url=jdbc:postgresql://{url}:5433/{dbname} -Dflyway.user={user} -Dflyway.password={pass}

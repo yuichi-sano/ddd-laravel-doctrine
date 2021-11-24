@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Providers;
+namespace App\Extension\Provider;
 use App\Extension\Hasher\MD5Hasher;
 use Illuminate\Hashing\HashManager;
 use Illuminate\Hashing\HashServiceProvider;
