@@ -94,7 +94,7 @@ abstract class AbstractFlywayCommand extends Command
      * 実行dirまで移動
      */
     protected function cdFlyDir(): void{
-        chdir( './flyway/' );
+        chdir( './database/flyway/' );
     }
 
     /**

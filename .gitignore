@@ -13,5 +13,5 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
-/flyway/build
-/flyway/.gradle
+/database/flyway/build
+/database/flyway/.gradle
