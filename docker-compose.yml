@@ -2,12 +2,7 @@
 version: '3'
 services:
     laravel.test:
-        build:
-            context: ./vendor/laravel/sail/runtimes/8.0
-            dockerfile: Dockerfile
-            args:
-                WWWGROUP: '${WWWGROUP}'
-        image: sail-8.0/app
+        image: 'yuichisano/php8.0addjava'
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         ports:
@@ -27,7 +22,6 @@ services:
             - meilisearch
             - selenium
             - postgres
-        entrypoint: "/var/www/html/sail-entry-point"
     mysql:
         image: 'mysql:8.0'
         ports:
