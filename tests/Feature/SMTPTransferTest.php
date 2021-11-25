@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Mail\Mailable;
+use Illuminate\Support\Facades\Artisan;
 use packages\Domain\Basic\Mail\Address;
 use packages\Domain\Basic\Mail\AddressList;
 use packages\Domain\Basic\Mail\Content;
@@ -19,6 +20,11 @@ use Illuminate\Support\Facades\Mail;
 use packages\Domain\Basic\Mail\Mail as MailObj;
 class SMTPTransferTest extends TestCase
 {
+    public function setUp(): void
+    {
+        parent::setUp();
+        Artisan::call('flyway:testing');
+    }
     /**
      * A basic unit test example.
      *
