@@ -15,3 +15,4 @@ yarn-error.log
 /.vscode
 /database/flyway/build
 /database/flyway/.gradle
+/.vagrant

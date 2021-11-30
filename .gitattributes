@@ -4,4 +4,5 @@
 *.js linguist-vendored
 *.sh  text eol=lf
 *.env.*  text eol=lf
+unzip text eol=lf
 CHANGELOG.md export-ignore
