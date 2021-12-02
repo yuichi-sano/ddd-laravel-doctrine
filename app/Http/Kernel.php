@@ -3,9 +3,31 @@
 namespace App\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Routing\Router;
 
 class Kernel extends HttpKernel
 {
+    /**
+     * Create a new HTTP kernel instance.
+     *
+     * @param  \Illuminate\Contracts\Foundation\Application  $app
+     * @param  \Illuminate\Routing\Router  $router
+     * @return void
+     */
+    public function __construct(Application $app, Router $router)
+    {
+        parent::__construct($app, $router);
+        if(env('API_ONLY')){
+            $this->middlewareGroups = [
+                'api' => [
+                    // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+                    'throttle:api',
+                    \Illuminate\Routing\Middleware\SubstituteBindings::class,
+                ],
+            ];
+        }
+    }
     /**
      * The application's global HTTP middleware stack.
      *

@@ -12,14 +12,14 @@ class FlywayCommand extends AbstractFlywayCommand
      *
      * @var string
      */
-    protected $signature = 'flyway {action=info} {location=local} {--test} {--force}';
+    protected string $signature = 'flyway {action=info} {location=local} {--test} {--force}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'flyway操作実行';
+    protected string $description = 'flyway操作実行';
 
 
     public function handle()
