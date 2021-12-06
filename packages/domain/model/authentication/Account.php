@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace packages\Domain\Model\Authentication;
+namespace packages\domain\model\authentication;
 
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Support\Arrayable;

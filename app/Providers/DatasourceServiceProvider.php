@@ -1,9 +1,9 @@
 <?php
 
 namespace App\Providers;
-use packages\Domain\Model\User\User;
-use packages\Infrastructure\Database\Doctrine as DoctrineRepos;
-use packages\Infrastructure\Database as DatabaseRepos;
+use packages\domain\model\User\User;
+use packages\infrastructure\database\doctrine as DoctrineRepos;
+use packages\infrastructure\database as DatabaseRepos;
 use Illuminate\Support\ServiceProvider;
 
 class DatasourceServiceProvider extends ServiceProvider

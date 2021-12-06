@@ -10,10 +10,21 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
-use packages\Service\UserGetInterface;
+use packages\domain\model\authentication\Account;
+use packages\domain\model\authentication\authorization\AccessTokenFactory;
+use packages\domain\model\authentication\authorization\RefreshTokenFactory;
+use packages\service\UserGetInterface;
 use Illuminate\Support\Facades\Auth;
 class AuthController extends BaseController
 {
+    private $accessTokenFactory;
+    private $refreshTokenFactory;
+    public function __construct(AccessTokenFactory $accessTokenFactory,RefreshTokenFactory $refreshTokenFactory)
+    {
+        $this->accessTokenFactory = $accessTokenFactory;
+        $this->refreshTokenFactory = $refreshTokenFactory;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -23,15 +34,16 @@ class AuthController extends BaseController
     {
 
         //Auth::guard('api')->getProvider()->setHasher(app('md5hash'));
-        if (! $token= Auth::attempt($request->validated())) {
+        if (! Auth::attempt($request->validated())) {
 
             return response()->json([
                 'Invalid credential'
             ], 400);
         }
-        $ref = Auth::refresh();
-
-        return response()->json([$token,$ref]);
+        $account = Auth::getLastAttempted();
+        $token = $this->accessTokenFactory->create($account);
+        $refreshToken = $this->refreshTokenFactory->create($account);
+        return response()->json([$token->toString(),$refreshToken->toString()]);
     }
 
 }
