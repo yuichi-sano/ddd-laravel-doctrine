@@ -12,14 +12,14 @@ class FlywayDevelopCommand extends AbstractFlywayCommand
      *
      * @var string
      */
-    protected string $signature = 'flyway:develop {--force}';
+    protected $signature = 'flyway:develop {--force}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected string $description = '開発用flywayマイグレーションwrapper';
+    protected $description = '開発用flywayマイグレーションwrapper';
 
 
     public function handle()

@@ -12,14 +12,14 @@ class FlywayTestCommand extends AbstractFlywayCommand
      *
      * @var string
      */
-    protected string $signature = 'flyway:testing {--cleanOnly}';
+    protected $signature = 'flyway:testing {--cleanOnly}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected string $description = 'ユニットテスト用flywayマイグレーションwrapper';
+    protected $description = 'ユニットテスト用flywayマイグレーションwrapper';
 
 
     public function handle()
