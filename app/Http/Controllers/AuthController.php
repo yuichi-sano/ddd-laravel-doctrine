@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\WebAPIException;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\SampleRequest;
 use App\Http\Resources\LoginResource;
@@ -36,11 +37,9 @@ class AuthController extends BaseController
 
         //Auth::guard('api')->getProvider()->setHasher(app('md5hash'));
         if (! Auth::attempt($request->validated())) {
-
-            return response()->json([
-                'Invalid credential'
-            ], 400);
+            throw new WebAPIException('W_0000000',[],500);
         }
+
         $account = Auth::getLastAttempted();
         $token = $this->accessTokenFactory->create($account);
         $refreshToken = $this->refreshTokenFactory->create($account);
