@@ -52,7 +52,7 @@ class WebAPIException extends Exception
             ],
             $this->statusCode,
             [],
-            JSON_UNESCAPED_UNICODE
+            env('APP_DEBUG') ? JSON_UNESCAPED_UNICODE : 0
         );
     }
 

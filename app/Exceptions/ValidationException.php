@@ -38,7 +38,7 @@ class ValidationException extends WebAPIException
             ],
             parent::HTTP_STATUS_BAD_REQUEST,
             [],
-            JSON_UNESCAPED_UNICODE
+            env('APP_DEBUG') ? JSON_UNESCAPED_UNICODE : 0
         );
     }
 }

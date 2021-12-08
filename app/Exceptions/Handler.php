@@ -50,11 +50,11 @@ class Handler extends ExceptionHandler
         return  response()->json(
         [
             'state' => 'E_0000001',
-            'message' => $exception->getLine(),
+            'message' => $exception->getMessage(),
         ],
         401,
         [],
-        JSON_UNESCAPED_UNICODE
+        env('APP_DEBUG') ? JSON_UNESCAPED_UNICODE : 0
     );
 
     }
