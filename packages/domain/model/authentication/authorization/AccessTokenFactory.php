@@ -16,7 +16,7 @@ class AccessTokenFactory implements StringType
     public function __construct(Carbon $carbon = null)
     {
         $this->carbon = $carbon ?? new Carbon();
-        $this->now = $this->carbon->now()->timestamp;
+        $this->now = $this->carbon->now();
     }
 
     public function create(Account $account): AccessToken{
@@ -40,8 +40,8 @@ class AccessTokenFactory implements StringType
     {
         $data = [
             'sub' => $account->getId(),
-            'iat' => $this->now,
-            'exp' => $this->now + config('jwt.ttl')
+            'iat' => $this->now->timestamp,
+            'exp' => $this->now->addMinute(config('jwt.ttl'))->timestamp
         ];
 
         return JWTFactory::customClaims($data);

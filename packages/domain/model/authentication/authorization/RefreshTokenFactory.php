@@ -16,7 +16,7 @@ class RefreshTokenFactory implements StringType
     public function __construct(Carbon $carbon = null)
     {
         $this->carbon = $carbon ?? new Carbon();
-        $this->now = $this->carbon->now()->timestamp;
+        $this->now = $this->carbon->now();
     }
 
     public function create(Account $account): RefreshToken{
@@ -40,8 +40,8 @@ class RefreshTokenFactory implements StringType
     {
         $data = [
             'sub' => $account->getId(),
-            'iat' => $this->now,
-            'exp' => $this->now + config('jwt.refresh_ttl')
+            'iat' => $this->now->timestamp,
+            'exp' => $this->now->addMinute(config('jwt.refresh_ttl'))->timestamp
         ];
 
         return JWTFactory::customClaims($data);

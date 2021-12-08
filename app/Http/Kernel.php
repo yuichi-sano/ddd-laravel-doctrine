@@ -19,13 +19,7 @@ class Kernel extends HttpKernel
     {
         parent::__construct($app, $router);
         if(env('API_ONLY')){
-            $this->middlewareGroups = [
-                'api' => [
-                    // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
-                    'throttle:api',
-                    \Illuminate\Routing\Middleware\SubstituteBindings::class,
-                ],
-            ];
+            unset($this->middlewareGroups ['web']);
         }
     }
     /**
@@ -62,9 +56,13 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
+            'cors',
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        ],
+        'api_for_web' => [
+            'auth:jwt-custom',
         ],
     ];
 
@@ -85,7 +83,8 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'jwt_auth'  =>  \Tymon\JWTAuth\Http\Middleware\Authenticate::class,
-        'jwt_refresh' => \Tymon\JWTAuth\Http\Middleware\RefreshToken::class,
+        //'jwt_auth'  =>  \Tymon\JWTAuth\Http\Middleware\Authenticate::class,
+        //'jwt_refresh' => \Tymon\JWTAuth\Http\Middleware\RefreshToken::class,
+        'cors'      => \App\Http\Middleware\Cors::class,
     ];
 }
