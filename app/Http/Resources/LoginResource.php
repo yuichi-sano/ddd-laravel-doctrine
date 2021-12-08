@@ -17,6 +17,7 @@ class LoginResource extends AbstractJsonResource
     {
         $definition = new LoginResultDefinition();
         $definition->setAccessToken($token->toString());
+        //setcookie('Authorization','Bear '.$token->toString(),0,'/','',true,true);
         $definition->setRefreshToken($refreshToken->toString());
         return new LoginResource($definition);
     }

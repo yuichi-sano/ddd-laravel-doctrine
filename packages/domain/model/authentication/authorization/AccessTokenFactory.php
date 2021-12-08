@@ -25,7 +25,10 @@ class AccessTokenFactory implements StringType
         return new AccessToken(JWTAuth::encode($payload)->get());
     }
 
-    public function createForRefreshToken(Account $account): AccessToken{
+    public function createForRefreshToken(RefreshToken $refreshToken): AccessToken{
+        //refreshtokenからDBレコードひっぱる
+        $account = new Account();
+
         $customClaims = $this->getJWTCustomClaims($account);
         $payload = JWTFactory::make($customClaims);
         return new AccessToken(JWTAuth::encode($payload)->get());

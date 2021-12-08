@@ -39,7 +39,6 @@ class AuthController extends BaseController
         if (! Auth::attempt($request->validated())) {
             throw new WebAPIException('W_0000000',[],500);
         }
-
         $account = Auth::getLastAttempted();
         $token = $this->accessTokenFactory->create($account);
         $refreshToken = $this->refreshTokenFactory->create($account);
