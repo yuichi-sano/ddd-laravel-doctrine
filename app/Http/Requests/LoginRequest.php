@@ -1,13 +1,13 @@
 <?php
 
 namespace App\Http\Requests;
-use App\Http\Requests\Definition\SampleDefinition;
+use App\Http\Requests\Definition\LoginDefinition;
 use Doctrine\Common\Collections\Criteria;
 use packages\domain\model\User\UserList;
 
 class LoginRequest extends Basic\AbstractFormRequest
 {
-    public function __construct(SampleDefinition $definition = null)
+    public function __construct(LoginDefinition $definition = null)
     {
         parent::__construct($definition);
     }

@@ -8,6 +8,7 @@ class ValidationException extends WebAPIException
     protected $errorCode;
     /** 例外メッセージ */
     protected $errorMessage;
+    private array $validationMessages;
 
     /**
      * ValidationException constructor.
@@ -18,7 +19,8 @@ class ValidationException extends WebAPIException
     {
         $this->errorCode = $code;
         $this->errorMessage = __('messages.' . $code);
-        parent::__construct($this->errorCode, $validationErrors, parent::HTTP_STATUS_BAD_REQUEST);
+        $this->validationMessages = $validationErrors;
+        parent::__construct($this->errorCode, [], parent::HTTP_STATUS_BAD_REQUEST);
     }
 
     /**
@@ -32,6 +34,7 @@ class ValidationException extends WebAPIException
             [
                 'state' => $this->errorCode,
                 'message' => $this->errorMessage,
+                'result'  => $this->validationMessages,
             ],
             parent::HTTP_STATUS_BAD_REQUEST,
             [],
