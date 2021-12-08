@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
 use App\Http\Requests\SampleRequest;
-use App\Http\Resources\SampleResource;
+use App\Http\Resources\LoginResource;
 use Illuminate\Contracts\Hashing\Hasher;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -30,7 +31,7 @@ class AuthController extends BaseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function login(SampleRequest $request, UserGetInterface $userGet)
+    public function login(LoginRequest $request, UserGetInterface $userGet)
     {
 
         //Auth::guard('api')->getProvider()->setHasher(app('md5hash'));
@@ -43,7 +44,7 @@ class AuthController extends BaseController
         $account = Auth::getLastAttempted();
         $token = $this->accessTokenFactory->create($account);
         $refreshToken = $this->refreshTokenFactory->create($account);
-        return response()->json([$token->toString(),$refreshToken->toString()]);
+        return LoginResource::buildResult($token,$refreshToken);;
     }
 
 }

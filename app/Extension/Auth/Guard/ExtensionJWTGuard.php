@@ -12,7 +12,7 @@ use Tymon\JWTAuth\JWTGuard;
 class ExtensionJWTGuard extends JWTGuard
 {
     /**
-     * JWTGuradではtokenの発行まで行っているが、責務を分離したいので認証のみ実施する。
+     * JWTGuardではtokenの発行まで行っているが、責務を分離したいので認証のみ実施する。
      *
      * @param  array  $credentials
      * @param  bool  $login
