@@ -14,20 +14,19 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use packages\domain\model\authentication\Account;
 use packages\domain\model\authentication\authorization\AccessTokenFactory;
+use packages\domain\model\authentication\authorization\RefreshToken;
 use packages\domain\model\authentication\authorization\RefreshTokenFactory;
-use packages\infrastructure\database\RefreshTokenRepository;
+use packages\service\authentication\AccessTokenGetInterface;
 use packages\service\UserGetInterface;
 use Illuminate\Support\Facades\Auth;
-class AuthController extends BaseController
+class AccessTokenGetController extends BaseController
 {
-    private AccessTokenFactory $accessTokenFactory;
-    private RefreshTokenFactory $refreshTokenFactory;
-
-    public function __construct(AccessTokenFactory $accessTokenFactory,RefreshTokenFactory $refreshTokenFactory,)
+    private $accessTokenFactory;
+    private $refreshTokenFactory;
+    public function __construct(AccessTokenFactory $accessTokenFactory,RefreshTokenFactory $refreshTokenFactory)
     {
         $this->accessTokenFactory = $accessTokenFactory;
         $this->refreshTokenFactory = $refreshTokenFactory;
-
     }
 
     /**
@@ -35,17 +34,12 @@ class AuthController extends BaseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function login(LoginRequest $request, UserGetInterface $userGet)
+    public function index( AccessTokenGetInterface $accessTokenGet): \Illuminate\Http\Response
     {
 
-        //Auth::guard('api')->getProvider()->setHasher(app('md5hash'));
-        if (! Auth::attempt($request->validated())) {
-            throw new WebAPIException('W_0000000',[],500);
-        }
-        $account = Auth::getLastAttempted();
-        $token = $this->accessTokenFactory->create($account);
+        $account = $accessTokenGet->execute(new RefreshToken('fdfdfdfd'));
         $refreshToken = $this->refreshTokenFactory->create($account);
-        return LoginResource::buildResult($token,$refreshToken);;
+        //return LoginResource::buildResult($refreshToken);
     }
 
 }

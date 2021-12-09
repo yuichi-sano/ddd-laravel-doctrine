@@ -47,7 +47,7 @@ COMMENT ON COLUMN sample.users.created_user IS '登録者';
 
 DROP TABLE IF EXISTS sample.user_refresh_tokens;
 CREATE TABLE sample.user_refresh_tokens (
-  refresh_token VARCHAR(256) NOT NULL,
+  refresh_token text NOT NULL,
   user_id VARCHAR(7) NOT NULL,
   expires_at TIMESTAMP(8) NOT NULL,
   signs_at TIMESTAMP(8) NOT NULL DEFAULT CURRENT_TIMESTAMP,
