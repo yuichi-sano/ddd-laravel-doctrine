@@ -36,6 +36,10 @@ class AuthenticationRefreshToken
         );
     }
 
+    public function getRefreshToken(): string {
+        return $this->refreshToken;
+    }
+
     public function isExpired(): string {
         return $this->refreshTokenExpiresAt->isExpired();
     }

@@ -15,6 +15,17 @@ use packages\infrastructure\database\RefreshTokenRepository;
 class DoctrineRefreshTokenRepository extends EntityRepository implements RefreshTokenRepository
 {
 
+    public function findByToken(RefreshToken $refreshToken): AuthenticationRefreshToken
+    {
+        $query = $this->createNativeNamedQuery('findByToken');
+        try {
+            $query->setParameters($refreshToken->toString());
+            return  $query->getSingleResult();
+        } catch (NoResultException $e) {
+            throw $e;
+        }
+
+    }
     public function save(AuthenticationRefreshToken  $authenticationRefreshToken): void
     {
 

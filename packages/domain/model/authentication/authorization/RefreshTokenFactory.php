@@ -38,9 +38,11 @@ class RefreshTokenFactory implements StringType
     }
 
     public function update(RefreshToken $refreshToken): RefreshToken{
-        //$customClaims = $this->getJWTCustomClaims($account);
-        //$payload = JWTFactory::make($customClaims);
-        //return new RefreshToken(JWTAuth::encode($payload)->get());
+        $origin = $this->refreshTokenRepository->findByToken($refreshToken);
+        $period = new RefreshTokenExpiresAt($this->now->addMinute(config('jwt.refresh_ttl')));
+        $authenticationRefreshToken = $origin->update($period);
+        $this->refreshTokenRepository->save($authenticationRefreshToken);
+        return $authenticationRefreshToken->getRefreshToken();
     }
 
     /**

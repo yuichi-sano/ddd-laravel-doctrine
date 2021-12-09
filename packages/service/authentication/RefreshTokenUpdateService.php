@@ -4,19 +4,18 @@ namespace packages\service\authentication;
 
 use packages\domain\model\authentication\authorization\RefreshToken;
 use packages\domain\model\authentication\authorization\RefreshTokenFactory;
-use packages\infrastructure\database\RefreshTokenRepository;
 
 
 class RefreshTokenUpdateService implements RefreshTokenUpdateInterface
 {
-    protected RefreshTokenRepository $refreshTokenRepository;
+    protected RefreshTokenFactory $refreshTokenFactory;
 
-    public function __construct(RefreshTokenRepository $refreshTokenRepository)
+    public function __construct(RefreshTokenFactory  $refreshTokenFactory)
     {
-        $this->refreshTokenRepository = $refreshTokenRepository;
+        $this->refreshTokenFactory = $refreshTokenFactory;
     }
     public function execute (RefreshToken $refreshToken): void{
-        $this->refreshTokenRepository->save($refreshToken);
+        $this->refreshTokenFactory->update($refreshToken);
     }
 
 }
