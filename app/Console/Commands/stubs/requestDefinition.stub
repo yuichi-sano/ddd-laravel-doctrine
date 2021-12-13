@@ -1,8 +1,10 @@
 <?php
 
 namespace DummyNamespace;
+use App\Http\Requests\Definition\Basic\DefinitionInterface;
+use App\Http\Requests\Definition\Basic\AbstractRequestDefinition;
 
-class DummyClass extends Basic\AbstractRequestDefinition implements Basic\DefinitionInterface
+class DummyClass extends AbstractRequestDefinition implements DefinitionInterface
 {
     /**
      * HttpRequestParameter

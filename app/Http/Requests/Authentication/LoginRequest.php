@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
-use App\Http\Requests\Definition\LoginDefinition;
-use Doctrine\Common\Collections\Criteria;
-use packages\domain\model\User\UserList;
+namespace App\Http\Requests\Authentication;
+use App\Http\Requests\Basic\AbstractFormRequest;
+use App\Http\Requests\Definition\Authentication\LoginDefinition;
 
-class LoginRequest extends Basic\AbstractFormRequest
+class LoginRequest  extends AbstractFormRequest
 {
     public function __construct(LoginDefinition $definition = null)
     {

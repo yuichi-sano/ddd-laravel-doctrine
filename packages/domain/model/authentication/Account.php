@@ -13,7 +13,7 @@ class Account implements  Authenticatable,JWTSubject
 {
     use AuthenticatableTrait;
     private int $id;
-    private string $access_id;
+    private string $accessId;
 
     public function getAuthIdentifierName(): string
     {

@@ -1,19 +1,24 @@
 <?php
 
-namespace App\Http\Resources\Definition;
+namespace App\Http\Resources\Definition\Authentication;
 
 use App\Http\Resources\Definition\Basic\ResultDefinitionInterface;
 use App\Http\Resources\Definition\Basic\AbstractResultDefinition;
 
+
 class LoginResultDefinition extends AbstractResultDefinition implements ResultDefinitionInterface
 {
 
+    
     //アクセストークン
-    protected string $accessToken = '';
+    protected string $accessToken;
+       
 
-    protected string $refreshToken = '';
+    //リフレッシュトークン
+    protected string $refreshToken;
+       
 
-
+    
     /**
      * @return mixed
      */
@@ -21,33 +26,34 @@ class LoginResultDefinition extends AbstractResultDefinition implements ResultDe
     {
         return $this->accessToken;
     }
+    
 
+    /**
+     * @return mixed
+     */
+    public function getRefreshToken()
+    {
+        return $this->refreshToken;
+    }
+    
 
+    
     /**
      * @param mixed accessToken
      */
     public function setAccessToken(string $accessToken): void
     {
-        $this->accessToken = $accessToken;
+        $this->accessToken = (string) $accessToken;
     }
+    
 
     /**
-     * @return string
-     */
-    public function getRefreshToken(): string
-    {
-        return $this->refreshToken;
-    }
-
-    /**
-     * @param string $refreshToken
+     * @param mixed refreshToken
      */
     public function setRefreshToken(string $refreshToken): void
     {
-        $this->refreshToken = $refreshToken;
+        $this->refreshToken = (string) $refreshToken;
     }
-
-
-
+    
 
 }

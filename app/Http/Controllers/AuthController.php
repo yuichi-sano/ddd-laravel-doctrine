@@ -3,21 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\WebAPIException;
-use App\Http\Requests\LoginRequest;
-use App\Http\Requests\SampleRequest;
-use App\Http\Resources\LoginResource;
-use Illuminate\Contracts\Hashing\Hasher;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Http\Request;
+use App\Http\Requests\Authentication\LoginRequest;
+use App\Http\Resources\Authentication\LoginResource;
 use Illuminate\Routing\Controller as BaseController;
-use packages\domain\model\authentication\Account;
 use packages\domain\model\authentication\authorization\AccessTokenFactory;
 use packages\domain\model\authentication\authorization\RefreshTokenFactory;
-use packages\infrastructure\database\RefreshTokenRepository;
 use packages\service\UserGetInterface;
 use Illuminate\Support\Facades\Auth;
+
 class AuthController extends BaseController
 {
     private AccessTokenFactory $accessTokenFactory;
@@ -34,6 +27,7 @@ class AuthController extends BaseController
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
+     * @throws WebAPIException
      */
     public function login(LoginRequest $request, UserGetInterface $userGet)
     {
@@ -45,7 +39,7 @@ class AuthController extends BaseController
         $account = Auth::getLastAttempted();
         $token = $this->accessTokenFactory->create($account);
         $refreshToken = $this->refreshTokenFactory->create($account);
-        return LoginResource::buildResult($token,$refreshToken);;
+        return LoginResource::buildResult($token,$refreshToken);
     }
 
 }

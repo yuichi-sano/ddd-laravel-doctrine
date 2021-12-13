@@ -215,10 +215,14 @@ class SwaggerCodeGenCommand extends GeneratorCommand
                 }
                 continue;
             }
+            $propertyType = $property['type'] ;
+            if($property['type'] == 'object' || $property['type'] == 'array'){
+                $propertyType = $planeName.self::pascalize($propertyName);
+            }
             if($resourceType == 'requestDefinition'){
-                $replaceProperties[] = $this->getValidatePropertyStr($propertyName,$property['type'], $property['description'],$swaggerArray['required']);
+                $replaceProperties[] = $this->getValidatePropertyStr($propertyName,$propertyType, $property['description'],$swaggerArray['required']);
             }else{
-                $replaceProperties[] = $this->getPropertyStr($propertyName, $property['type'], $property['description']);
+                $replaceProperties[] = $this->getPropertyStr($propertyName, $propertyType, $property['description']);
             }
 
             $getters[] = $this->getGetterMethodStr($propertyName);
@@ -343,12 +347,12 @@ class SwaggerCodeGenCommand extends GeneratorCommand
 
     protected function getGetterMethodStr($name): string
     {
-        $camel =  self::camelize($name);
+        $pascal =  self::pascalize($name);
         return "
     /**
      * @return mixed
      */
-    public function get{$camel}()
+    public function get{$pascal}()
     {
         return \$this->{$name};
     }
@@ -364,12 +368,12 @@ class SwaggerCodeGenCommand extends GeneratorCommand
         if($type == 'int' || $type == 'float' || $type == 'string' || $type == 'bool' ){
             $conv = "({$type})";
         }
-        $camel =  self::camelize($name);
+        $pascal =  self::pascalize($name);
         return "
     /**
      * @param mixed {$name}
      */
-    public function set{$camel}({$type} \${$name}): void
+    public function set{$pascal}({$type} \${$name}): void
     {
         \$this->{$name} = {$conv} \${$name};
     }
@@ -387,12 +391,12 @@ class SwaggerCodeGenCommand extends GeneratorCommand
      */
     protected function getArrayObjetSetterMethodStr($name, $childObj, $type, $is_optional = false): string
     {
-        $camel =  self::camelize($name);
+        $pascal =  self::pascalize($name);
         return "
     /**
      * @param mixed {$name}
      */
-    public function add{$camel}({$childObj} \${$name}): void
+    public function add{$pascal}({$childObj} \${$name}): void
     {
         \$this->{$name}[] = \${$name};
     }
@@ -400,10 +404,10 @@ class SwaggerCodeGenCommand extends GeneratorCommand
     /**
      * @param mixed {$name}
      */
-    public function set{$camel}(array \${$name}): void
+    public function set{$pascal}(array \${$name}): void
     {
         foreach(\${$name} as \$unit){
-           \$this->add{$camel}(\$unit);
+           \$this->add{$pascal}(\$unit);
         }
     }
     ";
