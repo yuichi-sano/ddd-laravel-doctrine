@@ -2,17 +2,12 @@
 
 namespace DummyNamespace;
 
-use App\Http\Resources\Definition\Basic\ResultDefinitionInterface;
-use App\Http\Resources\Definition\Basic\AbstractResultDefinition;
-
-
-class DummyClass extends AbstractResultDefinition implements ResultDefinitionInterface
+class DummyClass extends Basic\AbstractRequestDefinition implements Basic\DefinitionInterface
 {
-
+    /**
+     * HttpRequestParameter
+     * @var string
+     */
     properties
-
-    getters
-
-    setters
 
 }

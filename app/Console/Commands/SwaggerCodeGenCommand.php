@@ -34,12 +34,13 @@ class SwaggerCodeGenCommand extends GeneratorCommand
      *
      * @return string
      */
-    protected function getStub()
+    protected function getStub(): string
     {
         return  __DIR__.'/stubs/';
     }
 
-    protected function getStubCustom($resourceType){
+    protected function getStubCustom($resourceType): string
+    {
         $stubName = '';
         if($resourceType == 'request'){
             $stubName = 'request.stub';
@@ -60,7 +61,7 @@ class SwaggerCodeGenCommand extends GeneratorCommand
      * @param  string  $rootNamespace
      * @return string
      */
-    protected function getDefaultNamespace($rootNamespace)
+    protected function getDefaultNamespace($rootNamespace): string
     {
         return $rootNamespace.'\Http';
     }
@@ -74,7 +75,6 @@ class SwaggerCodeGenCommand extends GeneratorCommand
      */
     protected function qualifyClassCustom(string $name, $resourceType, $tag): string
     {
-
         if($resourceType == 'request'){
             $customName = 'Requests/'.$tag.'/'.$name;
         }elseif($resourceType == 'requestDefinition'){
@@ -139,11 +139,10 @@ class SwaggerCodeGenCommand extends GeneratorCommand
 
 
         $className = $this->qualifyClassCustom($name, $resourceType, $tag);
-        //$name = $this->qualifyClass($this->getNameInput());
+
         $path = $this->getPath($className);
         if ((! $this->hasOption('force') ||
                 ! $this->option('force')) &&
-            //$this->alreadyExists($this->getNameInput())
             $this->alreadyExists($className)
         ) {
             $this->error($this->type.' already exists!');
@@ -158,11 +157,12 @@ class SwaggerCodeGenCommand extends GeneratorCommand
 
 
 
-    public function childGen(array $children,$parentName){
-        $inp_name= $parentName;
-        $name = $this->qualifyClass($inp_name);
+    public function childGen(array $children, $name, $resourceType, $tag){
+
+        $className = $this->qualifyClassCustom($name, $resourceType, $tag);
+
         //$name = $this->qualifyClass($this->getNameInput());
-        $path = $this->getPath($name);
+        $path = $this->getPath($className);
 
         if ((! $this->hasOption('force') ||
                 ! $this->option('force')) &&
@@ -174,7 +174,7 @@ class SwaggerCodeGenCommand extends GeneratorCommand
 
         $this->makeDirectory($path);
 
-        $this->files->put($path, $this->buildClassOne($name,$children));
+        $this->files->put($path, $this->buildClassOne($className, $name, $resourceType, $tag, $children));
 
         $this->info($this->type.' created children successfully.');
     }
@@ -185,9 +185,9 @@ class SwaggerCodeGenCommand extends GeneratorCommand
      * @param string $name
      * @return string
      */
-    protected function buildClassOne(string $name, $planeName, $resourceType, $tag): string
+    protected function buildClassOne(string $name, $planeName, $resourceType, $tag, array $children = null): string
     {
-        $properties = [];
+        $replaceProperties = [];
         $getters = [];
         $setters = [];
         $dependencyDefinition = '';
@@ -199,36 +199,45 @@ class SwaggerCodeGenCommand extends GeneratorCommand
             return $this->replaceNamespace($stub, $name)->replaceClass($stub, $name);
         }
 
-        $swaggerArray = $this->swaggerArr['definitions'][$planeName];
-        if (!array_key_exists('properties', $swaggerArray)){
-            echo '$swaggerArray';
-            conttinue;
+        $swaggerArray = $children;
+        if(empty($children)){
+            $swaggerArray = $this->swaggerArr['definitions'][$planeName];
+            if (!array_key_exists('properties', $swaggerArray)){
+                echo '$swaggerArray';
+                conttinue;
+            }
         }
         foreach($swaggerArray['properties'] as $propertyName => $property){
+
             if(!array_key_exists('description', $property)){
                 if($property['$ref']){
                     $dependencyDefinition = $this->getDefinitionName($property['$ref']);
                 }
                 continue;
             }
-            $properties[] = $this->getPropertyStr($propertyName, $property['description']);
+            if($resourceType == 'requestDefinition'){
+                $replaceProperties[] = $this->getValidatePropertyStr($propertyName,$property['type'], $property['description'],$swaggerArray['required']);
+            }else{
+                $replaceProperties[] = $this->getPropertyStr($propertyName, $property['type'], $property['description']);
+            }
+
             $getters[] = $this->getGetterMethodStr($propertyName);
             if($property['type'] == 'object'){
-                $childName = $planeName.self::camelize($propertyName);
-                $setters[] = $this->getSetterMethodStr($propertyName, self::camelize($childName));
+                $childName = $planeName.self::pascalize($propertyName);
+                $setters[] = $this->getSetterMethodStr($propertyName, self::pascalize($childName));
                 if(array_key_exists('properties',$property) && $property['properties'] != '{}'){
-                    $this->childGen($property,$childName);
+                    $this->childGen($property,$childName ,$resourceType, $tag);
                 }
             }elseif($property['type'] == 'array'){
-                $childName = $planeName.self::camelize($propertyName);
+                $childName = $planeName.self::pascalize($propertyName);
                 $setters[] = $this->getArrayObjetSetterMethodStr($propertyName, $childName, $property['type']);
-                $this->childGen($property['items'],$childName);
+                $this->childGen($property['items'],$childName, $resourceType, $tag);
             }else{
                 $setters[] = $this->getSetterMethodStr($propertyName, $property['type']);
             }
         }
 
-        $this->replaceProperties($stub, implode("\n", $properties));
+        $this->replaceProperties($stub, implode("\n", $replaceProperties));
         $this->replaceGetters($stub, implode("\n", $getters));
         $this->replaceSetters($stub, implode("\n", $setters));
 
@@ -305,14 +314,35 @@ class SwaggerCodeGenCommand extends GeneratorCommand
         );
     }
 
-    protected function getPropertyStr($name,$description){
+    protected function getPropertyStr($name, $type, $description): string
+    {
         $camel =  self::camelize($name);
         return "
     //{$description}
-    protected \${$name};
+    protected {$type} \${$camel};
        ";
     }
-    protected function getGetterMethodStr($name){
+
+    protected function getValidatePropertyStr($name, $type, $description,$required): string
+    {
+        $camel =  self::camelize($name);
+        $validate = [];
+        if( in_array($camel,$required)){
+            $validate[] = 'required';
+        }
+        if( $type == 'string' || $type == 'integer'){
+            $validate[] = $type;
+        }
+        $validate_str = implode('|',$validate);
+        return "
+    //{$description}
+    protected {$type} \${$camel} = '{$validate_str}';
+       ";
+    }
+
+
+    protected function getGetterMethodStr($name): string
+    {
         $camel =  self::camelize($name);
         return "
     /**
@@ -324,7 +354,8 @@ class SwaggerCodeGenCommand extends GeneratorCommand
     }
     ";
     }
-    protected function getSetterMethodStr($name, $type, $is_optional = false){
+    protected function getSetterMethodStr($name, $type, $is_optional = false): string
+    {
 
         $type = $type === 'integer' ? 'int' : $type;
         $type = $type === 'number' ? 'float' : $type;
@@ -354,7 +385,8 @@ class SwaggerCodeGenCommand extends GeneratorCommand
      * @param bool $is_optional
      * @return string
      */
-    protected function getArrayObjetSetterMethodStr($name, $childObj, $type, $is_optional = false){
+    protected function getArrayObjetSetterMethodStr($name, $childObj, $type, $is_optional = false): string
+    {
         $camel =  self::camelize($name);
         return "
     /**
@@ -381,9 +413,21 @@ class SwaggerCodeGenCommand extends GeneratorCommand
      * @param string $str
      * @return string
      */
-    public static function camelize($str){
+    public static function pascalize($str): string
+    {
         return ucfirst(strtr(ucwords(strtr($str, array('_' => ' '))), array(' ' => '')));
     }
+    /**
+     * スネークからキャメルへ置換します。
+     * @param string $str
+     * @return string
+     */
+    public static function camelize($str): string
+    {
+        return lcfirst(strtr(ucwords(strtr($str, array('_' => ' '))), array(' ' => '')));
+    }
+
+
 
 
 }

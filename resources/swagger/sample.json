@@ -28,7 +28,7 @@
         "http"
     ],
     "paths": {
-        "/auth/login": {
+        "/login": {
             "post": {
                 "tags": [
                     "Authentication"
@@ -69,6 +69,48 @@
                     }
                 }
             }
+        },
+        "/sample": {
+            "get": {
+                "tags": [
+                    "Sample"
+                ],
+                "security": [
+                ],
+                "summary": "Sample",
+                "description": "test",
+                "externalDocs": {
+                    "description": "処理シーケンスはこちら",
+                    "url": ""
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "SampleRequest",
+                        "in": "body",
+                        "description": "Sampleリクエスト",
+                        "schema": {
+                            "$ref": "#/definitions/SampleDefinition"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sampleレスポンス",
+                        "schema": {
+                            "$ref": "#/definitions/SampleResource"
+                        }
+                    },
+                    "default": {
+                        "description": "ログイン成功時レスポンス",
+                        "schema": {
+                            "$ref": "#/definitions/AbstractJsonResource"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -93,11 +135,11 @@
         "LoginDefinition": {
             "description": "ログイン認証リクエスト定義",
             "required": [
-                "access_id",
+                "accessId",
                 "password"
             ],
             "properties": {
-                "access_id": {
+                "accessId": {
                     "description": "ログインID",
                     "type": "string",
                     "example": "1111"
@@ -129,19 +171,118 @@
             "type": "object",
             "description": "ログイン認証",
             "required": [
-                "access_token",
-                "refresh_token"
+                "accessToken",
+                "refreshToken"
             ],
             "properties": {
-                "access_token": {
+                "accessToken": {
                     "description": "アクセストークン",
                     "type": "string",
                     "example": "***********"
                 },
-                "refresh_token": {
+                "refreshToken": {
                     "description": "リフレッシュトークン",
                     "type": "string",
                     "example": "***********"
+                }
+            }
+        },
+        "SampleDefinition": {
+            "description": "Sample",
+            "required": [
+                "accessId",
+                "password"
+            ],
+            "properties": {
+                "accessId": {
+                    "description": "ログインID",
+                    "type": "string",
+                    "example": "1111"
+                },
+                "password": {
+                    "description": "ログインPASS",
+                    "type": "string",
+                    "example": "weak-password"
+                },
+                "hoge": {
+                    "description": "HOGE",
+                    "type": "string",
+                    "example": "HOGE"
+                }
+            },
+            "type": "object"
+        },
+        "SampleResource": {
+            "properties": {
+                "state": {
+                    "description": "結果コード",
+                    "type": "string"
+                },
+                "message": {
+                    "description": "メッセージ",
+                    "type": "string"
+                },
+                "result": {
+                    "$ref": "#/definitions/SampleResultDefinition"
+                }
+            }
+        },
+        "SampleResultDefinition": {
+            "type": "object",
+            "description": "SampleResult",
+            "required": [
+                "accessToken",
+                "refreshToken",
+                "user"
+            ],
+            "properties": {
+                "accessToken": {
+                    "description": "アクセストークン",
+                    "type": "string",
+                    "example": "***********"
+                },
+                "refreshToken": {
+                    "description": "リフレッシュトークン",
+                    "type": "string",
+                    "example": "***********"
+                },
+                "user": {
+                    "description": "リフレッシュトークン",
+                    "type": "object",
+                    "required": [
+                        "userId",
+                        "name",
+                        "addressList"
+                    ],
+                    "properties": {
+                        "userId": {
+                            "description": "ユーザーID",
+                            "type": "integer",
+                            "example": 1
+                        },
+                        "name": {
+                            "description": "名前",
+                            "type": "string",
+                            "example": 1
+                        },
+                        "addressList": {
+                            "description": "登録済み住所",
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "required": [
+                                    "address"
+                                ],
+                                "properties": {
+                                    "address": {
+                                        "description": "住所",
+                                        "type": "string",
+                                        "example": "ほげほげ"
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -150,7 +291,7 @@
         "Authorization": {
             "type": "apiKey",
             "name": "Authorization",
-            "description": "access_token",
+            "description": "accessToken",
             "in": "header"
         }
     },
