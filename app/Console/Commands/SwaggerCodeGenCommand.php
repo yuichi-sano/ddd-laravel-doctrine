@@ -101,7 +101,7 @@ class SwaggerCodeGenCommand extends GeneratorCommand
      */
     public function handle()
     {
-        $resource = file_get_contents( resource_path().'/swagger/sample.json');
+        $resource = file_get_contents( resource_path().'/swagger/api.json');
         $json = mb_convert_encoding($resource, 'UTF8', 'ASCII,JIS,UTF-8,EUC-JP,SJIS-WIN');
         $this->swaggerArr = json_decode($json,true);
 
