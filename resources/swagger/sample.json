@@ -31,7 +31,7 @@
         "/auth/login": {
             "post": {
                 "tags": [
-                    "auth"
+                    "Authentication"
                 ],
                 "security": [
                 ],
@@ -58,7 +58,7 @@
                     "200": {
                         "description": "ログイン成功時レスポンス",
                         "schema": {
-                            "$ref": "#/definitions/AuthLoginPostResource"
+                            "$ref": "#/definitions/LoginResource"
                         }
                     },
                     "default": {
@@ -68,7 +68,7 @@
                         }
                     }
                 }
-            },
+            }
         }
     },
     "definitions": {
@@ -102,11 +102,11 @@
                     "type": "string",
                     "example": "1111"
                 },
-                "login_password": {
+                "password": {
                     "description": "ログインPASS",
                     "type": "string",
                     "example": "weak-password"
-                },
+                }
             },
             "type": "object"
         },
@@ -130,7 +130,7 @@
             "description": "ログイン認証",
             "required": [
                 "access_token",
-                "refresh_token",
+                "refresh_token"
             ],
             "properties": {
                 "access_token": {
@@ -142,7 +142,7 @@
                     "description": "リフレッシュトークン",
                     "type": "string",
                     "example": "***********"
-                },
+                }
             }
         }
     },
