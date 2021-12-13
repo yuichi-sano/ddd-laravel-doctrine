@@ -55,7 +55,8 @@ class SwaggerCodeGenCommand extends GeneratorCommand
     public function handle()
     {
         //TODO ↓正規表現に変更、及びファイル存在チェック実装
-        $resource = file_get_contents( __DIR__.'/../../../resources/swagger/api.json');
+
+        $resource = file_get_contents( resource_path().'/swagger/sample.json');
         $json = mb_convert_encoding($resource, 'UTF8', 'ASCII,JIS,UTF-8,EUC-JP,SJIS-WIN');
         $arr = json_decode($json,true);
         $definitions = $arr['definitions'];

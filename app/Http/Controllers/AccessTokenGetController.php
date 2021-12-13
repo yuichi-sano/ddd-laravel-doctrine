@@ -17,16 +17,19 @@ use packages\domain\model\authentication\authorization\AccessTokenFactory;
 use packages\domain\model\authentication\authorization\RefreshToken;
 use packages\domain\model\authentication\authorization\RefreshTokenFactory;
 use packages\service\authentication\AccessTokenGetInterface;
+use packages\service\authentication\RefreshTokenUpdateInterface;
+use packages\service\authentication\RefreshTokenUpdateService;
 use packages\service\UserGetInterface;
 use Illuminate\Support\Facades\Auth;
 class AccessTokenGetController extends BaseController
 {
-    private $accessTokenFactory;
-    private $refreshTokenFactory;
-    public function __construct(AccessTokenFactory $accessTokenFactory,RefreshTokenFactory $refreshTokenFactory)
+    private AccessTokenGetInterface $accessTokenGet;
+    private RefreshTokenUpdateInterface $refreshTokenUpdate;
+    public function __construct(AccessTokenGetInterface $accessTokenGet,
+                                RefreshTokenUpdateInterface $refreshTokenUpdate)
     {
-        $this->accessTokenFactory = $accessTokenFactory;
-        $this->refreshTokenFactory = $refreshTokenFactory;
+        $this->accessTokenGet = $accessTokenGet;
+        $this->refreshTokenUpdate = $refreshTokenUpdate;
     }
 
     /**
@@ -37,9 +40,9 @@ class AccessTokenGetController extends BaseController
     public function index( AccessTokenGetInterface $accessTokenGet): \Illuminate\Http\Response
     {
 
-        $account = $accessTokenGet->execute(new RefreshToken('fdfdfdfd'));
-        $refreshToken = $this->refreshTokenFactory->create($account);
-        //return LoginResource::buildResult($refreshToken);
+        $accessToken = $accessTokenGet->execute(new RefreshToken('fdfdfdfd'));
+        $refreshToken = $this->refreshTokenUpdate->execute($accessToken);
+        return LoginResource::buildResult($accessToken,$refreshToken);
     }
 
 }

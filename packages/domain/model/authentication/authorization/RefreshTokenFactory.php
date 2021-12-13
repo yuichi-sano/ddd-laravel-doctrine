@@ -13,7 +13,7 @@ use Tymon\JWTAuth\Facades\JWTFactory;
 class RefreshTokenFactory implements StringType
 {
     protected Carbon $carbon;
-    protected $now;
+    protected Carbon $now;
     protected RefreshTokenRepository $refreshTokenRepository;
 
     public function __construct(Carbon $carbon = null, RefreshTokenRepository $refreshTokenRepository)

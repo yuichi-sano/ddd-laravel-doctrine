@@ -1,0 +1,167 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Sample-API-Doc",
+        "description": "暗号化-復号化は別途定義します\n===\nステータスコード体系\n---\n| 符号|符号(略)|備考|\n|:------|:-------:|:-------|\n|Info|I| 正常|\n|Error|E|エラー|\n|Warning|W|準正常系|\n|Validation|V|入力値エラー|",
+        "license": {
+            "name": "Apache 2.4",
+            "url": "http://www.apache.org/licenses/LICENSE-2.4.html"
+        },
+        "version": "1"
+    },
+    "externalDocs": {
+        "description": "インターフェイス以外詳細の詳細仕様",
+        "url": "--"
+    },
+    "host": "sample.com",
+    "basePath": "/",
+    "security": [
+        {
+            "UserLoginId": []
+        },
+        {
+            "AplGuard": []
+        }
+    ],
+    "schemes": [
+        "https",
+        "http"
+    ],
+    "paths": {
+        "/auth/login": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "security": [
+                ],
+                "summary": "ログイン認証",
+                "description": "test",
+                "externalDocs": {
+                    "description": "処理シーケンスはこちら",
+                    "url": ""
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "LoginRequest",
+                        "in": "body",
+                        "description": "ログイン認証リクエスト",
+                        "schema": {
+                            "$ref": "#/definitions/LoginDefinition"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ログイン成功時レスポンス",
+                        "schema": {
+                            "$ref": "#/definitions/AuthLoginPostResource"
+                        }
+                    },
+                    "default": {
+                        "description": "ログイン成功時レスポンス",
+                        "schema": {
+                            "$ref": "#/definitions/AbstractJsonResource"
+                        }
+                    }
+                }
+            },
+        }
+    },
+    "definitions": {
+        "AbstractJsonResource": {
+            "description": "API共通レスポンス定義",
+            "properties": {
+                "state": {
+                    "description": "結果コード",
+                    "type": "string"
+                },
+                "message": {
+                    "description": "メッセージ",
+                    "type": "string"
+                },
+                "result": {
+                    "description": "API個別",
+                    "type": "object"
+                }
+            },
+            "type": "object"
+        },
+        "LoginDefinition": {
+            "description": "ログイン認証リクエスト定義",
+            "required": [
+                "access_id",
+                "password"
+            ],
+            "properties": {
+                "access_id": {
+                    "description": "ログインID",
+                    "type": "string",
+                    "example": "1111"
+                },
+                "login_password": {
+                    "description": "ログインPASS",
+                    "type": "string",
+                    "example": "weak-password"
+                },
+            },
+            "type": "object"
+        },
+        "LoginResource": {
+            "properties": {
+                "state": {
+                    "description": "結果コード",
+                    "type": "string"
+                },
+                "message": {
+                    "description": "メッセージ",
+                    "type": "string"
+                },
+                "result": {
+                    "$ref": "#/definitions/LoginResultDefinition"
+                }
+            }
+        },
+        "LoginResultDefinition": {
+            "type": "object",
+            "description": "ログイン認証",
+            "required": [
+                "access_token",
+                "refresh_token",
+            ],
+            "properties": {
+                "access_token": {
+                    "description": "アクセストークン",
+                    "type": "string",
+                    "example": "***********"
+                },
+                "refresh_token": {
+                    "description": "リフレッシュトークン",
+                    "type": "string",
+                    "example": "***********"
+                },
+            }
+        }
+    },
+    "securityDefinitions": {
+        "Authorization": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "description": "access_token",
+            "in": "header"
+        }
+    },
+    "tags": [
+        {
+            "name": "auth",
+            "description": "認証関連API群"
+        },
+        {
+            "name": "sample",
+            "description": "sample-グルーピングタグ"
+        }
+    ]
+}
