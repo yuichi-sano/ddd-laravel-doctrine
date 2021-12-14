@@ -96,7 +96,16 @@ class SwaggerCodeGenCommand extends GeneratorCommand
     public function getDefinitionName($name){
         return str_replace('#/definitions/','',$name);
     }
-
+    /**
+     * Get the destination class path.
+     *
+     * @param  string  $name
+     * @return string
+     */
+    protected function getRoutesPath($name)
+    {
+        return base_path('routes/'.$name.'.php');
+    }
 
     /**
      * Execute the console command.
@@ -105,6 +114,7 @@ class SwaggerCodeGenCommand extends GeneratorCommand
      */
     public function handle()
     {
+
         $resource = file_get_contents( resource_path().'/swagger/api.json');
         $json = mb_convert_encoding($resource, 'UTF8', 'ASCII,JIS,UTF-8,EUC-JP,SJIS-WIN');
         $this->swaggerArr = json_decode($json,true);
@@ -132,11 +142,10 @@ class SwaggerCodeGenCommand extends GeneratorCommand
             foreach ($apiEndPath as $method => $apiEnd){
 
                 $tag = end($apiEnd['tags']);
-                $controllers[$tag][$method]=[];
-                $controllers[$tag][$method]['security'] = end($apiEnd['security']);
                 if($this->option('tag') && $tag  != $this->option("tag")){
                     continue;
                 }
+                $controllers[$tag][$method]['security'] = end($apiEnd['security']);
                 $controllers[$tag][$method]['description']=$apiEnd['description'];
                 $request = end($apiEnd['parameters']);
                 $requestName =  $request['name'];
@@ -151,11 +160,10 @@ class SwaggerCodeGenCommand extends GeneratorCommand
                 $resultDefinition = $this->getDefinitionName($this->swaggerArr['definitions'][$resultResource]["properties"]["result"]['$ref']);
                 $this->makeDefinition($resultDefinition,  $tag, 'resultDefinition');
             }
-
-            $this->makeControllers($uri, $controllers);
-
+            if(!empty($controllers)){
+                $this->makeControllers($uri, $controllers);
+            }
         }
-
     }
 
     /**
@@ -197,8 +205,87 @@ class SwaggerCodeGenCommand extends GeneratorCommand
 
         foreach ($controllers as $tag => $controller){
             $className = $this->makeController($uri, $controller, $tag);
-            //TODO routeファイルへの書き込み
+            $this->addApiRoute($uri,$className,$controller);
         }
+    }
+
+    /**
+     * @param $uri
+     * @param $className
+     * @param $controller
+     * @return void
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
+    public function addApiRoute($uri,$className,$controller){
+        $this->replaceUseAddPoint($className);
+        foreach ($controller as $method => $param){
+            $this->replaceRouteAddPoint($uri, $method, $className, $param);
+        }
+
+
+    }
+
+    /**
+     * @param $className
+     * @return false|void
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
+    public function replaceUseAddPoint($className){
+        $apiRoute = $this->files->get($this->getRoutesPath('api'));
+
+
+        $existsPattern = preg_quote($className, '/');
+        $existsPattern = "/^.*$existsPattern.*\$/m";
+        if(preg_match_all($existsPattern, $apiRoute, $matches)){
+            $this->info('すでにuse宣言されています');
+            return false;
+        }
+
+        $searchStr='artisanUseAddPoint';
+        $pattern = preg_quote($searchStr, '/');
+        $pattern = "/^.*$pattern.*\$/m";
+        file_put_contents($this->getRoutesPath('api'), preg_replace(
+            $pattern,
+            'use '.$className.";\n"."\n".'//'.$searchStr,
+            $apiRoute
+        ));
+    }
+    /**
+     * @param $className
+     * @return false|void
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
+    public function replaceRouteAddPoint($uri, $method, $className, $param){
+        $apiRoute = $this->files->get($this->getRoutesPath('api'));
+
+        $existsPattern = preg_quote("Route::".$method."('".$uri."'", '/');
+        $existsPattern = "/^.*$existsPattern.*\$/m";
+        if(preg_match_all($existsPattern, $apiRoute, $matches)){
+            $this->info('すでに同一名、同一methodでroutes宣言されています');
+            return false;
+        }
+
+        $searchStr='artisanRouteAddPoint';
+        $pattern = preg_quote($searchStr, '/');
+        $pattern = "/^.*$pattern.*\$/m";
+        $class = str_replace($this->getNamespace($className).'\\', '', $className);
+        $route = "Route::".$method."('".$uri."', [".$class."::class,'".self::convMethodStr($method)."']);";
+        $security = array_key_last($param['security']);
+
+
+
+        if($security){
+            $func = "Route::group(['middleware' => '".$security."'], function () {\n";
+            $func .= "    ".$route."\n";
+            $func .= "});";
+        }else{
+            $func = $route;
+        }
+        file_put_contents($this->getRoutesPath('api'), preg_replace(
+            $pattern,
+            $func."\n"."\n".'//'.$searchStr,
+            $apiRoute
+        ));
     }
 
 
@@ -549,23 +636,6 @@ class SwaggerCodeGenCommand extends GeneratorCommand
         $this->replaceHttpMethods($stub, implode("\n",$getMethodStrs));
         return $this->replaceNamespace($stub, $name)->replaceClass($stub, $name);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     /**
