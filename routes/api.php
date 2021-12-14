@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SampleController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AccessTokenGetController;
+
+//artisanUseAddPoint
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -22,7 +25,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 */
 Route::get('/login', [AuthController::class, 'login']);
 Route::get('/access_token_get', [AccessTokenGetController::class,'index']);
-Route::group(['middleware' => 'api_for_web'], function () {
+Route::group(['middleware' => 'tokenAuth'], function () {
     Route::get('/sample', [SampleController::class, 'index']);
 });
 
+//artisanRouteAddPoint
