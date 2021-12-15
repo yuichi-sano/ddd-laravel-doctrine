@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Authentication\LoginController;
-use App\Http\Controllers\AccessTokenGetController;
+use App\Http\Controllers\Authentication\AccessTokenGetController;
 use App\Http\Controllers\Sample\SampleController;
 
 //artisanUseAddPoint
@@ -25,7 +25,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 */
 Route::post('/login', [LoginController::class, 'login']);
-Route::get('/access_token_get', [AccessTokenGetController::class,'index']);
+Route::post('/refresh', [AccessTokenGetController::class,'index']);
 Route::group(['middleware' => 'tokenAuth'], function () {
     Route::get('/samle', [SampleController::class, 'index']);
 });
