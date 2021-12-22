@@ -6,36 +6,44 @@ namespace packages\domain\model\User;
 
 class User
 {
-    private UserId $id;
-    private string $name;
-    private Address $address;
+    private UserId $userId;
+    private UserProfile $userProfile;
+    private Addresses $addresses;
+
 
     /**
+     *
      * @return int
      */
-    public function getId(): int
+    public function getUserId(): int
     {
-        return $this->id->value();
+        return $this->userId->toInteger();
     }
 
+
     /**
-     * @return string
+     * @return Address
      */
-    public function getName(): string
+    public function getUserProfile(): UserProfile
     {
-        return $this->name;
+        return $this->userProfile;
     }
 
     /**
      * @return Address
      */
-    public function getAddress(): Address
+    public function getAddresses(): Addresses
     {
-        return $this->address;
+        return $this->addresses;
     }
 
     public function hasGrants(): boolean
     {
         return $this->id == 1;
     }
+
+    public  array $collectionKeys = [
+        'userId'
+    ];
+
 }

@@ -2,22 +2,24 @@
 
 declare(strict_types=1);
 
-namespace packages\infrastructure\database\doctrine\user;
+namespace packages\infrastructure\database\doctrine\merchant;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use packages\domain\model\merchant\Merchant;
+use packages\domain\model\merchant\MerchantRepository;
 use packages\domain\model\User\User;
 use packages\domain\model\User\UserId;
 use packages\domain\model\User\UserRepository;
 use packages\infrastructure\database\doctrine\DoctrineRepository;
 
-class DoctrineUserRepository extends DoctrineRepository implements UserRepository
+class DoctrineMerchantRepository extends DoctrineRepository implements MerchantRepository
 {
 
     /**
      * @throws NonUniqueResultException
      * @throws NoResultException
      */
-    public function findUser(UserId $userId): User
+    public function findMerchant(int $merchantId): Merchant
     {
         $query = $this->createNativeNamedQuery('ddd-sample');
         try {
@@ -25,14 +27,15 @@ class DoctrineUserRepository extends DoctrineRepository implements UserRepositor
         } catch (NoResultException $e) {
             throw $e;
         }
-
-
     }
 
-    public function add(User $user): void
+    public function list(): array
     {
-        $em = $this->getEntityManager();
-        $em->persist($user);
-        $em->flush();
+        $query = $this->createNativeNamedQuery('ddd-sample');
+        try {
+            return $this->getGroupingResult($query->getResult());
+        } catch (NoResultException $e) {
+            throw $e;
+        }
     }
 }
