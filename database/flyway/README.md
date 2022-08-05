@@ -2,7 +2,7 @@
 
 ## Setup
 
-- PostgreSQL 11.9
+- PostgreSQL 10.1
 - Docker
 - [Flyway](https://flywaydb.org/) というデータベースマイグレーションツールで管理します。
 

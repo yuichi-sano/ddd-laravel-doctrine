@@ -13,13 +13,13 @@ class AccessTokenFactoryTest extends TestCase
      *
      * @return void
      */
-    public function test_create()
-    {
-        $test = new AccessTokenFactory();
-        $account = new Account(1,'r');
-        $token =$test->create($account);
-
-
-
-    }
+//    public function test_create()
+//    {
+//        $test = new AccessTokenFactory();
+//        $account = new Account(1,'r');
+//        $token =$test->create($account);
+//
+//
+//
+//    }
 }

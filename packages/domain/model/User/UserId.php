@@ -2,29 +2,37 @@
 
 declare(strict_types=1);
 
-namespace packages\domain\model\User;
+namespace packages\domain\model\user;
 
-use packages\domain\basic\type\IntegerType;
+use packages\domain\basic\type\StringType;
 
-class UserId implements IntegerType
+class UserId implements StringType
 {
-    private int $value;
+    private ?string $value;
 
-    public function __construct(int $id)
+    public function __construct(string $value = null)
     {
-        $this->value = $id;
+        $this->value = $value;
     }
 
     public function isEmpty(): bool
     {
-        return is_null($this->value);
+        if (!$this->value) {
+            return true;
+        }
+        return false;
     }
 
-
-
-    function  toInteger(): int
+    public function toString(): string
     {
+        if ($this->isEmpty()) {
+            return "";
+        }
         return $this->value;
     }
 
+    public function getValue(): ?string
+    {
+        return $this->value;
+    }
 }

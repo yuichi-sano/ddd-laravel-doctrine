@@ -1,1 +1,7 @@
+/data_migrations/*
 *.sqlite*
+*.sqlite*
+/.idea
+/.vscode
+/flyway/build/*
+/flyway/.gradle

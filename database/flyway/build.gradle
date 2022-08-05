@@ -11,11 +11,11 @@ configurations {
 }
 
 flyway {
-    url = 'jdbc:postgresql://host.docker.internal:5433/sample'
+    url = 'jdbc:postgresql://localhost:5432/sample'
     user = 'sample'
-    password = 'weak-password'
+    password = 's7ov4b'
     encoding = 'UTF-8'
-    schemas = ['version', 'sample']
+    schemas = ['version','sample']
 }
 
 tasks.register( 'schemaSpy', JavaExec ) {
@@ -36,13 +36,13 @@ tasks.register( 'schemaSpy', JavaExec ) {
     main = '-jar'
     args = [
             schemaSpyFile,
-            '-t', 'pgsql11',
+            '-t', 'pgsql10',
             '-dp', driverFile,
-            '-host', 'host.docker.internal',
-            '-port', '5433',
+            '-host', 'localhost',
+            '-port', '5432',
             '-db', 'sample',
             '-u', 'sample',
-            '-p', 'weak-password',
+            '-p', 's7ov4b',
             '-schemas', 'version,sample',
             '-o', outputDir,
             '-vizjs',

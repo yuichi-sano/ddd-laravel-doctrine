@@ -2,23 +2,22 @@
 
 declare(strict_types=1);
 
-namespace packages\domain\model\User;
+namespace packages\domain\model\user;
 
 class Address
 {
-
     private string $prefCode;
-
     private string $zip;
-
     private string $address;
 
-    public function getAddress(){
+    public function getAddress()
+    {
         return $this->address;
     }
 
-    public  array $collectionKeys = [
-        'zip','prefCode','address'
+    public array $collectionKeys = [
+        'zip',
+        'prefCode',
+        'address'
     ];
-
 }

@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace packages\domain\model\User;
+namespace packages\domain\model\user;
 
 use Ramsey\Collection\Collection;
+use Traversable;
 
 class Addresses extends Collection
 {
@@ -19,7 +20,7 @@ class Addresses extends Collection
     /**
      * @return Address[]
      */
-    public function getIterator(): \Traversable
+    public function getIterator(): Traversable
     {
         return parent::getIterator();
     }
@@ -30,11 +31,10 @@ class Addresses extends Collection
      */
     public function toArray(): array
     {
-        $toArray=[];
-        foreach ($this->data as $data){
+        $toArray = [];
+        foreach ($this->data as $data) {
             $toArray[$data->personal] = $data->address;
         }
         return $toArray;
     }
-
 }
