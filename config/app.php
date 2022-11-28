@@ -67,7 +67,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Tokyo',
 
     /*
     |--------------------------------------------------------------------------
@@ -80,7 +80,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'ja',
 
     /*
     |--------------------------------------------------------------------------
@@ -93,7 +93,7 @@ return [
     |
     */
 
-    'fallback_locale' => 'en',
+    'fallback_locale' => 'ja',
 
     /*
     |--------------------------------------------------------------------------
@@ -106,7 +106,7 @@ return [
     |
     */
 
-    'faker_locale' => 'en_US',
+    'faker_locale' => 'ja_JP',
 
     /*
     |--------------------------------------------------------------------------
@@ -181,6 +181,7 @@ return [
         //FW機能拡張
         App\Extension\Provider\CustomHashServiceProvider::class,
         App\Extension\Provider\CustomConsoleServiceProvider::class,
+        App\Extension\Provider\CustomValidatorServiceProvider::class,
         //app機能
         App\Providers\DatasourceServiceProvider::class,
 
@@ -237,7 +238,14 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'TransactionManager' => App\Extension\Support\Facades\TransactionManager::class,
 
     ],
+
+    /**
+     * custom config
+     */
+    'api_only'=> env('API_ONLY'),
+    'migration_data_chunk_length'=> env('MIGRATION_DATA_CHUNK_LENGTH'),
 
 ];

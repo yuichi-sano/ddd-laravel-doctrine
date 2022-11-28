@@ -1,8 +1,10 @@
 <?php
-namespace packages\Service;
-use packages\Domain\Model\User\UserId;
-use packages\Domain\Model\User\User;
-use packages\Infrastructure\Database\UserRepository;
+
+namespace packages\service;
+
+use packages\domain\model\user\UserId;
+use packages\domain\model\user\User;
+use packages\domain\model\user\UserRepository;
 
 class UserGetService implements UserGetInterface
 {

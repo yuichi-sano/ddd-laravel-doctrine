@@ -1,16 +1,19 @@
 <?php
 
-namespace packages\Infrastructure\Transfer\Sample;
+namespace packages\infrastructure\transfer\Sample;
+
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use packages\Domain\Basic\Mail\Header;
-use packages\Domain\Basic\Mail\Message;
+use packages\domain\basic\mail\Header;
+use packages\domain\basic\mail\Message;
 
 class SampleMailNotice extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
+
     public Header $header;
     public Message $message;
 
@@ -19,7 +22,7 @@ class SampleMailNotice extends Mailable
      *
      * @return void
      */
-    public function __construct(Header $header,Message $message)
+    public function __construct(Header $header, Message $message)
     {
         $this->header = $header;
         $this->message = $message;

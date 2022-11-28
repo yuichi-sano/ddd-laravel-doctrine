@@ -27,13 +27,30 @@ return [
     'managers'                   => [
         'default' => [
             'dev'           => env('APP_DEBUG', false),
-            'meta'          => env('DOCTRINE_METADATA', 'xml'),
+            'meta'          => env('DOCTRINE_METADATA', 'simplified_xml'),
             'connection'    => env('DB_CONNECTION', 'pgsql'),
-            'namespaces'    => [
-                'packages\Domain\Model'
-            ],
+            'namespaces'    => [],
             'paths'         => [
-                base_path('packages/infrastructure/database/xml')
+                base_path('packages/infrastructure/database/xml/authentication/')
+                    =>'packages\domain\model\authentication',
+                base_path('packages/infrastructure/database/xml/authentication/authorization')
+                    =>'packages\domain\model\authentication\authorization',
+                base_path('packages/infrastructure/database/xml/user')
+                    =>'packages\domain\model\user',
+                base_path('packages/infrastructure/database/xml/merchant')
+                =>'packages\domain\model\merchant',
+                base_path('packages/infrastructure/database/xml/batch')
+                =>'packages\domain\model\batch',
+                base_path('packages/infrastructure/database/xml/jp')
+                =>'packages\domain\model\zipcode',
+                base_path('packages/infrastructure/database/xml/prefecture')
+                =>'packages\domain\model\prefecture',
+                base_path('packages/infrastructure/database/xml/facility')
+                =>'packages\domain\model\facility',
+                base_path('packages/infrastructure/database/xml/facility/device')
+                =>'packages\domain\model\facility\device',
+                base_path('packages/infrastructure/database/xml/facility/workplace')
+                =>'packages\domain\model\facility\workplace',
             ],
             'repository'    => Doctrine\ORM\EntityRepository::class,
             'proxies'       => [

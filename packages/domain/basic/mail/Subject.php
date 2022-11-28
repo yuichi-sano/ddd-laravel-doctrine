@@ -1,7 +1,6 @@
 <?php
 
-namespace packages\Domain\Basic\Mail;
-
+namespace packages\domain\basic\mail;
 
 class Subject
 {
@@ -14,13 +13,11 @@ class Subject
 
     public function isEmpty(): bool
     {
-       return empty($this->value);
+        return empty($this->value);
     }
 
     public function toString(): string
     {
         return (string)$this->value;
     }
-
-
 }

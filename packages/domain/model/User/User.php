@@ -2,40 +2,37 @@
 
 declare(strict_types=1);
 
-namespace packages\Domain\Model\User;
+namespace packages\domain\model\user;
 
 class User
 {
-    private UserId $id;
-    private string $name;
-    private Address $address;
+    private UserId $userId;
+
+    private Addresses $addresses;
 
     /**
+     *
      * @return int
      */
-    public function getId(): int
+    public function getUserId(): string
     {
-        return $this->id->value();
-    }
-
-    /**
-     * @return string
-     */
-    public function getName(): string
-    {
-        return $this->name;
+        return $this->userId->getValue();
     }
 
     /**
      * @return Address
      */
-    public function getAddress(): Address
+    public function getAddresses(): Addresses
     {
-        return $this->address;
+        return $this->addresses;
     }
 
-    public function hasGrants(): boolean
+    public function hasGrants(): bool
     {
-        return $this->id == 1;
+        return $this->userId == 1;
     }
+
+    public array $collectionKeys = [
+        'UserId'
+    ];
 }

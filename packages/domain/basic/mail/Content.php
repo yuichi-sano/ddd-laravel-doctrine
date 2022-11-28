@@ -1,7 +1,6 @@
 <?php
 
-namespace packages\Domain\Basic\Mail;
-
+namespace packages\domain\basic\mail;
 
 class Content
 {
@@ -14,12 +13,11 @@ class Content
 
     public function isEmpty(): bool
     {
-       return empty($this->value);
+        return empty($this->value);
     }
 
     public function toString(): string
     {
         return join("\n", $this->lines);
     }
-
 }
